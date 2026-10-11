@@ -1,0 +1,91 @@
+{
+  "nav": {
+    "home": "Welcome",
+    "textbook": "Textbook",
+    "chapters": "Chapters",
+    "progress": "Progress",
+    "helper": "AI Helper",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "auth": {
+    "title": "QAIRU AI Platform",
+    "subtitle": "Sign in with your university account",
+    "email": "University Email",
+    "password": "Password",
+    "signin": "Sign In",
+    "signing_in": "Signing in...",
+    "error_invalid": "Invalid email or password.",
+    "error_email": "Please enter a valid @qairu.kz or @stud.qairu.kz email.",
+    "forgot": "Forgot password? Contact IT support.",
+    "language": "Тілді ауыстыру (Қазақша)"
+  },
+  "home": {
+    "welcome": "Welcome back",
+    "subtitle": "Continue your AI learning journey",
+    "continue": "Continue Reading",
+    "chapters_done": "chapters completed",
+    "start": "Start Learning",
+    "overview_title": "What you will learn",
+    "overview_sub": "A complete introduction to how language models work — from tokens to transformers."
+  },
+  "textbook": {
+    "chapter": "Chapter",
+    "min_read": "min read",
+    "interactive": "Interactive",
+    "completed": "Completed",
+    "next_chapter": "Next Chapter",
+    "prev_chapter": "Previous Chapter",
+    "toc": "Table of Contents",
+    "playground": "Playground",
+    "try_it": "Try it yourself"
+  },
+  "helper": {
+    "title": "AI Helper",
+    "placeholder": "Ask anything about this chapter...",
+    "send": "Send",
+    "powered_by": "Powered by QAIRU AI",
+    "stub_response": "The AI Helper will be available once the university API is connected. In the meantime, revisit the chapter content or ask your instructor."
+  },
+  "progress": {
+    "title": "Your Progress",
+    "overall": "Overall completion",
+    "chapters": "Chapters",
+    "keep_going": "Keep going!",
+    "all_done": "All chapters completed!"
+  },
+  "chapters": {
+    "1": {
+      "title": "Language Models",
+      "subtitle": "Next-word prediction, n-grams, RNNs"
+    },
+    "2": {
+      "title": "Tokenization",
+      "subtitle": "How text becomes numbers"
+    },
+    "3": {
+      "title": "Embeddings",
+      "subtitle": "How numbers acquire meaning"
+    },
+    "4": {
+      "title": "Attention",
+      "subtitle": "How words take in their context"
+    },
+    "5": {
+      "title": "The Transformer",
+      "subtitle": "The architecture inside every modern model"
+    },
+    "6": {
+      "title": "Training Data",
+      "subtitle": "Web crawls, filtering, deduplication"
+    },
+    "7": {
+      "title": "Loss & Gradient Descent",
+      "subtitle": "How a model actually learns"
+    },
+    "8": {
+      "title": "Fine-tuning",
+      "subtitle": "Teaching by example (SFT), then by preference (DPO)"
+    }
+  }
+}

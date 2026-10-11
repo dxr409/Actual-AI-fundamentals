@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #121214;
+  }
+
+  body {
+    background-color: #121214;
+    color: #f2f2f7;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* macOS sleek scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+  /* ── Selection styling ── */
+  ::selection {
+    background: rgba(191, 90, 242, 0.4);
+    color: #ffffff;
+  }
+
+  /* ── Prose — textbook chapter body ── */
+  .prose-qairu {
+    color: #d1d1d6;
+    line-height: 1.72;
+    font-size: 15px;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
+
+  .prose-qairu h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 2.2rem;
+    margin-bottom: 0.9rem;
+    letter-spacing: -0.015em;
+  }
+
+  .prose-qairu h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1.6rem;
+    margin-bottom: 0.6rem;
+    color: #bf5af2;
+  }
+
+  .prose-qairu p {
+    margin-bottom: 1.25rem;
+    color: #c7c7cc;
+  }
+
+  .prose-qairu strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .prose-qairu em {
+    color: #f2f2f7;
+    font-style: italic;
+  }
+
+  .prose-qairu code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    background: #1c1c1e;
+    color: #bf5af2;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .prose-qairu blockquote {
+    border-left: 2px solid #bf5af2;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #a1a1a6;
+  }
+
+  .prose-qairu ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .prose-qairu ul li {
+    display: flex;
+    gap: 0.5rem;
+    color: #c7c7cc;
+  }
+
+  .prose-qairu ul li::before {
+    content: '›';
+    color: #bf5af2;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-xs rounded-xl transition-all duration-150 cursor-pointer text-white;
+    background-color: #bf5af2;
+  }
+  .btn-primary:hover {
+    background-color: #a855f7;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-4 py-2 border font-medium text-xs rounded-xl transition-all duration-150 cursor-pointer;
+    border-color: rgba(255, 255, 255, 0.08);
+    background-color: #1e1e22;
+    color: #e5e5ea;
+  }
+  .btn-secondary:hover {
+    background-color: #28282e;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  .card {
+    @apply rounded-2xl p-5;
+    background-color: #161618;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+}
