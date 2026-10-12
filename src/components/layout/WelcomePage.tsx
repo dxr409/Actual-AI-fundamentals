@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore, useProgressStore } from '@/lib/store'
 import { CHAPTERS } from '@/content/chapters'
-import { ArrowRight, Pencil } from 'lucide-react'
+import { ArrowRight, Pencil, BookOpen, Sparkles, CheckCircle2 } from 'lucide-react'
 import {
   WelcomeContent,
   loadWelcomeEdits,
@@ -23,124 +23,98 @@ export default function WelcomePage() {
   const edited = hasWelcomeEdits()
 
   return (
-    <div className="max-w-3xl mx-auto px-8 py-12 animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto py-4 select-text animate-fade-in">
+      {/* Nextra Breadcrumb */}
+      <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-medium mb-3">
+        <span>Documentation</span>
+        <span>/</span>
+        <span className="text-gray-800 dark:text-gray-200 font-semibold">Introduction</span>
+      </div>
+
       {/* Top action bar with edit button */}
       <div className="flex items-center justify-between mb-4">
         <div>
           {edited && (
-            <span
-              className="pill text-xs"
-              style={{
-                background: 'rgba(56, 22, 14, 0.2)',
-                color: '#e8a488',
-                border: '1px solid rgba(56, 22, 14, 0.4)',
-              }}
-            >
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20">
               Edited locally
             </span>
           )}
         </div>
         <button
           onClick={() => setEditorOpen(true)}
-          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
-          style={{ color: '#7a8b9e', border: '1px solid #3c4856' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = '#7c361f'
-            e.currentTarget.style.color = '#e8a488'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = '#3c4856'
-            e.currentTarget.style.color = '#7a8b9e'
-          }}
+          className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 hover:bg-gray-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-gray-200/80 dark:border-neutral-700"
         >
           <Pencil size={12} />
-          Edit page
+          <span>Edit page</span>
         </button>
       </div>
 
-      {/* Greeting Header */}
+      {/* Greeting & Header */}
       <div className="mb-8">
-        <p style={{ color: '#65778a', fontSize: 13, marginBottom: 4 }}>
-          {welcomeContent.greeting},
-        </p>
-        <h1
-          style={{
-            fontSize: 32,
-            fontWeight: 700,
-            color: '#f0ece8',
-            letterSpacing: '-0.5px',
-            textTransform: 'capitalize',
-          }}
-        >
-          {user?.name ?? 'Student'}
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-3">
+          Introduction
         </h1>
-        <p style={{ color: '#8898a9', marginTop: 6, fontSize: 14, lineHeight: 1.6 }}>
-          {welcomeContent.subtitle}
+        <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+          Welcome to <strong className="text-gray-900 dark:text-white">QAIRU AI Platform</strong>, {user?.name ? `${user.name}!` : 'student!'} This is an interactive textbook and learning laboratory designed to take you from the fundamental mathematics of prediction to training and aligning state-of-the-art Transformer architectures.
         </p>
         {welcomeContent.introNotice && (
-          <p style={{ color: '#6b7d90', marginTop: 8, fontSize: 13, lineHeight: 1.6 }}>
-            {welcomeContent.introNotice}
-          </p>
+          <div className="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-500/10 border border-blue-200/80 dark:border-blue-500/20 text-sm text-blue-900 dark:text-blue-300 flex items-start gap-3">
+            <Sparkles size={18} className="text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+            <div>{welcomeContent.introNotice}</div>
+          </div>
         )}
       </div>
 
-      {/* Progress card */}
-      <div
-        style={{
-          background: '#15181e',
-          border: '1px solid #28303d',
-          borderRadius: 14,
-          padding: '18px 22px',
-          marginBottom: 28,
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: '#c8d8e4' }}>Overall Completion</span>
-          <span style={{ fontSize: 13, fontFamily: 'monospace', color: '#f59e0b' }}>{pct}%</span>
+      {/* Progress & Overview Card (Nextra Style) */}
+      <div className="p-5 rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-[#161618] shadow-xs mb-8">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-semibold text-gray-900 dark:text-white">Overall Learning Progress</span>
+          <span className="text-sm font-mono font-bold text-blue-600 dark:text-blue-400">{pct}%</span>
         </div>
-        <div style={{ height: 4, background: '#252d3a', borderRadius: 3, overflow: 'hidden' }}>
+        <div className="h-2 bg-gray-100 dark:bg-neutral-800 rounded-full overflow-hidden mb-2">
           <div
-            style={{
-              height: '100%',
-              width: `${pct}%`,
-              borderRadius: 3,
-              background: 'linear-gradient(90deg, #f59e0b, #f97316)',
-              transition: 'width 0.7s ease',
-            }}
+            className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500"
+            style={{ width: `${pct}%` }}
           />
         </div>
-        <p style={{ marginTop: 8, fontSize: 11, color: '#65778a' }}>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           {doneCount} of {CHAPTERS.length} chapters completed
         </p>
       </div>
 
-      {/* Continue CTA */}
-      <Link
-        to={`/chapter/${nextChapter.id}`}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 8,
-          padding: '10px 22px',
-          borderRadius: 10,
-          fontSize: 14,
-          fontWeight: 600,
-          background: '#38160e',
-          color: '#f0ece8',
-          textDecoration: 'none',
-          marginBottom: 24,
-          transition: 'background 150ms',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = '#7c361f')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = '#38160e')}
-      >
-        {doneCount === 0 ? 'Start Learning' : 'Continue Reading'}
-        <ArrowRight size={15} />
-      </Link>
+      {/* Start / Continue Button */}
+      <div className="mb-10">
+        <Link
+          to={`/chapter/${nextChapter.id}`}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all cursor-pointer active:scale-[0.98]"
+        >
+          <span>{doneCount === 0 ? 'Start Chapter 1' : 'Continue Reading'}</span>
+          <ArrowRight size={15} />
+        </Link>
+      </div>
 
       {/* Dynamic Curriculum Roadmap */}
-      <div className="mt-4">
+      <div className="mt-8">
+        <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-4 pb-2 border-b border-gray-200 dark:border-neutral-800">
+          Curriculum Overview
+        </h2>
         <CurriculumRoadmap currentChapterId={nextChapter.id} />
+      </div>
+
+      {/* Nextra Signature Bottom Pagination */}
+      <div className="mt-14 pt-8 border-t border-gray-200 dark:border-neutral-800 flex justify-end">
+        <Link
+          to={`/chapter/${nextChapter.id}`}
+          className="flex flex-col items-end p-4 rounded-xl border border-gray-200 dark:border-neutral-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 bg-white dark:bg-[#161618] hover:bg-blue-50/20 dark:hover:bg-neutral-800/40 transition-all group text-right min-w-[220px]"
+        >
+          <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-1">
+            Next
+            <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+          </span>
+          <span className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+            {nextChapter.title}
+          </span>
+        </Link>
       </div>
 
       {/* Welcome page editor modal */}

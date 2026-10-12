@@ -1,133 +1,91 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import Sidebar from './Sidebar'
+import React from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import NextraNavbar from './NextraNavbar'
+import NextraSidebar from './NextraSidebar'
+import NextraTOC from './NextraTOC'
 import HelperWidget from '@/components/helper/HelperWidget'
-import PomodoroTimer from './PomodoroTimer'
 import { useUIStore } from '@/lib/store'
-import { CHAPTERS } from '@/content/chapters'
-import { ChevronLeft, ChevronRight, Bot, PanelLeft } from 'lucide-react'
-import KnowledgePill from '@/components/socratic/KnowledgePill'
-
-const PANEL_W = 232
-const HELPER_PANEL_W = 320
-const COLLAPSED_W = 54
+import { X } from 'lucide-react'
 
 export default function AppShell() {
-  const navigate = useNavigate()
   const location = useLocation()
   const helperOpen = useUIStore((s) => s.helperOpen)
-  const toggleHelper = useUIStore((s) => s.toggleHelper)
   const sidebarCollapsed = useUIStore((s) => s.sidebarCollapsed)
-  const toggleSidebar = useUIStore((s) => s.toggleSidebar)
+  const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen)
+  const setMobileMenuOpen = useUIStore((s) => s.setMobileMenuOpen)
 
-  const sidebarW = sidebarCollapsed ? COLLAPSED_W : PANEL_W
-
-  // Determine current chapter from route
-  const match = location.pathname.match(/\/chapter\/(\d+)/)
-  const currentChapterId = match ? parseInt(match[1]) : null
-  const currentChapter = currentChapterId ? CHAPTERS.find((c) => c.id === currentChapterId) : null
+  const isChapter = location.pathname.startsWith('/chapter/')
 
   return (
-    <div className="flex h-screen w-full overflow-hidden" style={{ background: '#121214' }}>
-      {/* Left: macOS Collapsible Sidebar */}
-      <div
-        className="flex-shrink-0 h-full overflow-hidden"
-        style={{
-          width: sidebarW,
-          transition: 'width 240ms cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-      >
-        <Sidebar width={sidebarW} collapsed={sidebarCollapsed} panelW={PANEL_W} />
-      </div>
+    <div className="min-h-screen flex flex-col bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 transition-colors">
+      {/* ── Nextra Sticky Top Navbar (Edge-to-Edge) ── */}
+      <NextraNavbar />
 
-      {/* Center: Main Content Area + macOS Top Bar */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden" style={{ background: '#121214' }}>
-        {/* macOS Title Bar / Header */}
-        <header
-          className="h-11 flex items-center justify-between px-4 border-b flex-shrink-0 select-none"
-          style={{
-            background: '#141416',
-            borderColor: 'rgba(255, 255, 255, 0.07)',
-          }}
+      {/* ── Main Container: Sidebar + Article Content + TOC (Edge-to-Edge, No Outer Side Gaps) ── */}
+      <div className="flex-1 w-full flex">
+        {/* Desktop Left Sidebar (Collapsible with smooth transition) */}
+        <div
+          className={`hidden md:block transition-all duration-200 ease-in-out shrink-0 ${
+            sidebarCollapsed ? 'w-0 overflow-hidden' : 'w-64'
+          }`}
         >
-          {/* Left: Sidebar Toggle, History Nav & Clean Breadcrumbs (without '1 of 16') */}
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={toggleSidebar}
-              className="p-1.5 rounded-lg text-[#8e8e93] hover:text-white hover:bg-[#222226] transition-colors cursor-pointer"
-              title="Toggle sidebar"
-            >
-              <PanelLeft size={15} />
-            </button>
+          <NextraSidebar />
+        </div>
 
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => navigate(-1)}
-                className="p-1 rounded text-[#8e8e93] hover:text-white hover:bg-[#222226] transition-colors cursor-pointer"
-                title="Go back"
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                onClick={() => navigate(1)}
-                className="p-1 rounded text-[#8e8e93] hover:text-white hover:bg-[#222226] transition-colors cursor-pointer"
-                title="Go forward"
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-
-            {/* Breadcrumb Trail: Clean without '1 of 16' */}
-            {currentChapter ? (
-              <div className="flex items-center gap-1.5 text-xs text-[#8e8e93] truncate ml-1">
-                <span>{currentChapter.partTitle}</span>
-                <span className="text-[#48484a]">›</span>
-                <span className="text-[#f2f2f7] font-medium truncate">{currentChapter.title}</span>
+        {/* Mobile Left Sidebar Drawer */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-40 md:hidden flex">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            {/* Drawer Content */}
+            <div className="relative w-72 max-w-[85vw] bg-white dark:bg-[#111111] h-full shadow-2xl flex flex-col z-50">
+              <div className="p-4 border-b border-gray-200 dark:border-neutral-800 flex items-center justify-between">
+                <span className="font-bold text-sm tracking-tight">Navigation</span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 rounded text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                >
+                  <X size={18} />
+                </button>
               </div>
-            ) : (
-              <span className="text-xs text-[#8e8e93] font-medium ml-1">Welcome</span>
-            )}
+              <div className="flex-1 overflow-hidden">
+                <NextraSidebar />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Center Article Content */}
+        <main className="flex-1 min-w-0 px-6 sm:px-10 lg:px-16 py-8 flex flex-col justify-between">
+          <div className="w-full max-w-4xl mx-auto">
+            <Outlet />
           </div>
 
-          {/* Right: Knowledge Pill, Pomodoro Timer & AI Helper */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {/* Knowledge Map Status Pill */}
-            <KnowledgePill />
-
-            {/* Small Pomodoro Timer widget */}
-            <PomodoroTimer />
-
-            {/* AI Helper Bot Button */}
-            <button
-              onClick={toggleHelper}
-              className={`p-1.5 rounded-lg text-xs flex items-center gap-1.5 transition-colors cursor-pointer ${
-                helperOpen
-                  ? 'text-[#bf5af2] bg-[rgba(191,90,242,0.15)]'
-                  : 'text-[#8e8e93] hover:text-white hover:bg-[#222226]'
-              }`}
-              title="Toggle AI Helper"
-            >
-              <Bot size={16} />
-            </button>
-          </div>
-        </header>
-
-        {/* Scrollable Page Body */}
-        <main className="flex-1 overflow-y-auto min-w-0 select-text">
-          <Outlet />
+          {/* Nextra Standard Footer */}
+          <footer className="mt-20 pt-8 border-t border-gray-200/80 dark:border-neutral-800 text-center text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span>QAIRU AI Platform</span>
+              <span>MIT License • Interactive AI Education</span>
+            </div>
+          </footer>
         </main>
-      </div>
 
-      {/* Right: AI Helper & Knowledge Map Panel */}
-      <div
-        className="flex-shrink-0 h-full overflow-hidden flex flex-col"
-        style={{
-          width: helperOpen ? HELPER_PANEL_W : 0,
-          background: '#161618',
-          transition: 'width 240ms cubic-bezier(0.4, 0, 0.2, 1)',
-          borderLeft: helperOpen ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
-        }}
-      >
-        {helperOpen && <HelperWidget />}
+        {/* Right Desktop Table of Contents (for Chapter Pages, No Changes) */}
+        {isChapter && (
+          <div className="hidden xl:block shrink-0">
+            <NextraTOC />
+          </div>
+        )}
+
+        {/* Right AI Helper Slide-over Panel */}
+        {helperOpen && (
+          <aside className="w-80 shrink-0 border-l border-gray-200/80 dark:border-neutral-800 bg-white dark:bg-[#161618] h-[calc(100vh-4rem)] sticky top-16 overflow-hidden flex flex-col z-20 shadow-lg">
+            <HelperWidget />
+          </aside>
+        )}
       </div>
     </div>
   )

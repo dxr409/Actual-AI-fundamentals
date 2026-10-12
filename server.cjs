@@ -38,6 +38,11 @@ loadDistIntoMemory();
 function handleRequest(req, res) {
   const url = (req.url || '/').split('?')[0];
 
+  // Reload memory map if asset or root page requested
+  if (url === '/' || url === '/index.html' || !assets.has(url)) {
+    loadDistIntoMemory();
+  }
+
   // Proxy /api requests to backend on port 8000, or fail fast so frontend offline mode activates immediately
   if (url.startsWith('/api')) {
     const proxyReq = http.request(
