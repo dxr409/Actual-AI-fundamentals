@@ -4,8 +4,6 @@ import {
   Network,
   Search,
   RotateCcw,
-  Sparkles,
-  Info,
 } from 'lucide-react'
 import { useKnowledgeGraphStore } from '@/lib/knowledgeGraphStore'
 import ObsidianKnowledgeGraph from './ObsidianKnowledgeGraph'
@@ -53,22 +51,22 @@ export default function KnowledgeGraphPage() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#101014] overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-4rem)] min-h-[620px] w-full bg-[#111113] overflow-hidden">
       {/* ── Top Header ── */}
       <div className="flex items-center justify-between px-6 py-3.5 border-b border-[rgba(255,255,255,0.08)] bg-[#161618] z-30">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-[rgba(56,189,248,0.12)] border border-[rgba(56,189,248,0.25)] text-[#38bdf8] shadow-sm">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-[rgba(246,233,199,0.14)] border border-[rgba(246,233,199,0.3)] text-[#f6e9c7] shadow-sm">
             <Network size={18} />
           </div>
           <div>
             <h1 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
               <span>Tree of Knowledge</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#26262c] text-[#8e8e93]">
-                Obsidian Adaptive Graph
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#242428] text-[#d6d3d1]">
+                Curriculum Dependency Graph
               </span>
             </h1>
-            <p className="text-[11px] text-[#8e8e93]">
-              Read lectures, complete Bloom&apos;s quizzes, and illuminate prerequisites.
+            <p className="text-[11px] text-[#a8a29e]">
+              Read chapters, verify mastery with Bloom&apos;s checks, and unlock dependent concepts.
             </p>
           </div>
         </div>
@@ -85,12 +83,12 @@ export default function KnowledgeGraphPage() {
               placeholder="Find topic..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-40 md:w-56 pl-8 pr-3 py-1.5 rounded-xl bg-[#202026] border border-[rgba(255,255,255,0.08)] text-xs text-white placeholder-[#71717a] focus:outline-none focus:border-[#38bdf8] transition-colors"
+              className="w-40 md:w-56 pl-8 pr-3 py-1.5 rounded-xl bg-[#202024] border border-[rgba(255,255,255,0.08)] text-xs text-white placeholder-[#71717a] focus:outline-none focus:border-[#f6e9c7] transition-colors"
             />
 
             {/* Autocomplete Dropdown */}
             {filteredNodes.length > 0 && (
-              <div className="absolute top-full mt-1.5 right-0 w-64 rounded-xl bg-[#1c1c22] border border-[rgba(255,255,255,0.12)] shadow-2xl p-1.5 space-y-1 z-50">
+              <div className="absolute top-full mt-1.5 right-0 w-64 rounded-xl bg-[#1c1c20] border border-[rgba(255,255,255,0.12)] shadow-2xl p-1.5 space-y-1 z-50">
                 {filteredNodes.map((n) => (
                   <div
                     key={n.id}
@@ -98,16 +96,18 @@ export default function KnowledgeGraphPage() {
                       selectTopic(n.id)
                       setSearchQuery('')
                     }}
-                    className="flex items-center justify-between p-2 rounded-lg hover:bg-[#282832] cursor-pointer text-xs transition-colors"
+                    className="flex items-center justify-between p-2 rounded-lg hover:bg-[#28282e] cursor-pointer text-xs transition-colors"
                   >
                     <span className="text-white font-medium truncate">{n.title}</span>
                     <span
                       className={`text-[9px] px-1.5 py-0.5 rounded uppercase font-bold ${
                         n.status === 'mastered'
                           ? 'text-[#10b981] bg-[#10b981]/15'
+                          : n.status === 'needs_review'
+                          ? 'text-[#ef4444] bg-[#ef4444]/15'
                           : n.status === 'locked'
                           ? 'text-[#71717a] bg-[#27272a]'
-                          : 'text-[#38bdf8] bg-[#38bdf8]/15'
+                          : 'text-[#f6e9c7] bg-[#f6e9c7]/15'
                       }`}
                     >
                       {n.status}
@@ -121,7 +121,7 @@ export default function KnowledgeGraphPage() {
           {/* Reset progression button */}
           <button
             onClick={handleReset}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#8e8e93] hover:text-white bg-[#202026] hover:bg-[#282830] border border-[rgba(255,255,255,0.08)] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#a8a29e] hover:text-white bg-[#202024] hover:bg-[#28282e] border border-[rgba(255,255,255,0.08)] transition-all cursor-pointer"
             title="Reset Graph Progression"
           >
             <RotateCcw size={12} />

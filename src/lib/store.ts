@@ -16,15 +16,29 @@ interface AuthState {
   logout: () => void
 }
 
+const DEFAULT_USER: User = {
+  id: 'student-1',
+  email: 'student@qairu.ai',
+  name: 'Learner',
+  role: 'student',
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: null,
-      token: null,
+      user: DEFAULT_USER,
+      token: 'guest-token',
       login: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null }),
+      logout: () => set({ user: DEFAULT_USER, token: 'guest-token' }),
     }),
-    { name: 'qairu-auth' }
+    {
+      name: 'qairu-auth',
+      onRehydrateStorage: () => (state) => {
+        if (state && !state.user) {
+          state.user = DEFAULT_USER
+        }
+      },
+    }
   )
 )
 

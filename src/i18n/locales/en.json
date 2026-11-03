@@ -55,6 +55,22 @@
     "all_done": "All chapters completed!"
   },
   "chapters": {
+    "17": {
+      "title": "Search algorithms, A* and heuristics",
+      "subtitle": "How AI navigates grids, weighs terrain costs, and finds optimal paths"
+    },
+    "18": {
+      "title": "Adversarial search, game trees and decision making",
+      "subtitle": "Outsmarting opponents with Minimax, Alpha-Beta pruning, and MCTS"
+    },
+    "19": {
+      "title": "Probability, Bayesian inference and sequential inference",
+      "subtitle": "Reasoning under uncertainty, dice & lava river dilemmas, and gamma (γ)"
+    },
+    "20": {
+      "title": "Classical machine learning and neural networks",
+      "subtitle": "From straight lines and decision trees to multi-layer neural networks"
+    },
     "1": {
       "title": "Language Models",
       "subtitle": "Next-word prediction, n-grams, RNNs"

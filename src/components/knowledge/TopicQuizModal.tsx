@@ -8,7 +8,6 @@ import {
   ArrowRight,
   RotateCcw,
   BookOpen,
-  Lock,
   Unlock,
 } from 'lucide-react'
 import { TopicNode, BloomQuestion } from '@/lib/api'
@@ -22,22 +21,22 @@ interface TopicQuizModalProps {
 
 const BLOOM_BADGES: Record<string, { label: string; color: string; bg: string; border: string }> = {
   remember: {
-    label: "Bloom L1 • Remember",
-    color: '#38bdf8',
-    bg: 'rgba(56, 189, 248, 0.12)',
-    border: 'rgba(56, 189, 248, 0.25)',
+    label: 'Bloom L1 • Remember',
+    color: '#fdfbf7',
+    bg: 'rgba(253, 251, 247, 0.1)',
+    border: 'rgba(253, 251, 247, 0.22)',
   },
   understand: {
-    label: "Bloom L2 • Understand",
-    color: '#bf5af2',
-    bg: 'rgba(191, 90, 242, 0.12)',
-    border: 'rgba(191, 90, 242, 0.25)',
+    label: 'Bloom L2 • Understand',
+    color: '#f6e9c7',
+    bg: 'rgba(246, 233, 199, 0.12)',
+    border: 'rgba(246, 233, 199, 0.28)',
   },
   apply: {
-    label: "Bloom L3 • Apply",
-    color: '#f59e0b',
-    bg: 'rgba(245, 158, 11, 0.12)',
-    border: 'rgba(245, 158, 11, 0.25)',
+    label: 'Bloom L3 • Apply',
+    color: '#e5dec9',
+    bg: 'rgba(229, 222, 201, 0.12)',
+    border: 'rgba(229, 222, 201, 0.28)',
   },
 }
 
@@ -46,24 +45,25 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
   const recordQuizScore = useKnowledgeGraphStore((s) => s.recordQuizScore)
   const nodes = useKnowledgeGraphStore((s) => s.nodes)
 
-  const questions: BloomQuestion[] = topic.questions && topic.questions.length > 0
-    ? topic.questions
-    : [
-        {
-          id: `${topic.id}_fallback_q1`,
-          bloom_level: 'understand',
-          question: `What is the core role of ${topic.title} in the modern LLM stack?`,
-          options: [
-            topic.description,
-            'A legacy technique superseded by static hash tables',
-            'An unmonitored heuristic with no theoretical backing',
-            'Exclusively used for image rasterization',
-          ],
-          correct_index: 0,
-          explanation: topic.description,
-          socratic_hint: 'Review the main definition and purpose of this topic.',
-        },
-      ]
+  const questions: BloomQuestion[] =
+    topic.questions && topic.questions.length > 0
+      ? topic.questions
+      : [
+          {
+            id: `${topic.id}_fallback_q1`,
+            bloom_level: 'understand',
+            question: `What is the core role of ${topic.title} in the modern LLM stack?`,
+            options: [
+              topic.description,
+              'A legacy technique superseded by static hash tables',
+              'An unmonitored heuristic with no theoretical backing',
+              'Exclusively used for image rasterization',
+            ],
+            correct_index: 0,
+            explanation: topic.description,
+            socratic_hint: 'Review the main definition and purpose of this topic.',
+          },
+        ]
 
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({})
   const [submitted, setSubmitted] = useState(false)
@@ -81,7 +81,6 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
     if (!allAnswered || submitted || submitting) return
     setSubmitting(true)
 
-    // Calculate score
     let correctCount = 0
     questions.forEach((q, idx) => {
       if (selectedAnswers[idx] === q.correct_index) {
@@ -106,14 +105,12 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
     setUnlockedTopics([])
   }
 
-  // Scoring analysis
   const correctCount = questions.filter(
     (q, idx) => selectedAnswers[idx] === q.correct_index
   ).length
   const scorePct = Math.round((correctCount / questions.length) * 100)
   const isMastered = scorePct >= 70
 
-  // Lookup unlocked topic names
   const unlockedNames = unlockedTopics
     .map((id) => nodes.find((n) => n.id === id)?.title)
     .filter(Boolean)
@@ -123,9 +120,10 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
       <div
         className="relative w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl bg-[#161618] border border-[rgba(255,255,255,0.12)] shadow-2xl overflow-hidden"
         style={{
-          boxShadow: isMastered && submitted
-            ? '0 0 50px rgba(16, 185, 129, 0.25), 0 20px 40px rgba(0,0,0,0.8)'
-            : '0 20px 50px rgba(0,0,0,0.8)',
+          boxShadow:
+            isMastered && submitted
+              ? '0 0 50px rgba(16, 185, 129, 0.25), 0 20px 40px rgba(0,0,0,0.8)'
+              : '0 20px 50px rgba(0,0,0,0.8)',
         }}
       >
         {/* ── Modal Header ── */}
@@ -137,13 +135,12 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                 background:
                   topic.status === 'mastered'
                     ? 'rgba(16, 185, 129, 0.15)'
-                    : 'rgba(56, 189, 248, 0.15)',
-                color:
-                  topic.status === 'mastered' ? '#10b981' : '#38bdf8',
+                    : 'rgba(246, 233, 199, 0.14)',
+                color: topic.status === 'mastered' ? '#10b981' : '#f6e9c7',
                 border: `1px solid ${
                   topic.status === 'mastered'
                     ? 'rgba(16, 185, 129, 0.3)'
-                    : 'rgba(56, 189, 248, 0.3)'
+                    : 'rgba(246, 233, 199, 0.3)'
                 }`,
               }}
             >
@@ -154,7 +151,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                 <h3 className="text-sm font-bold text-white tracking-tight">
                   {topic.title}
                 </h3>
-                <span className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold bg-[#26262a] text-[#8e8e93]">
+                <span className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold bg-[#26262a] text-[#a8a29e]">
                   {topic.category}
                 </span>
               </div>
@@ -166,7 +163,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#8e8e93] hover:text-white hover:bg-[#2c2c32] transition-colors"
+            className="p-1.5 rounded-lg text-[#8e8e93] hover:text-white hover:bg-[#2c2c32] transition-colors cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -174,13 +171,12 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
 
         {/* ── Modal Body (Scrollable) ── */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Result Banner after submit */}
           {submitted && (
             <div
               className={`p-4 rounded-xl border transition-all ${
                 isMastered
                   ? 'bg-[rgba(16,185,129,0.1)] border-[rgba(16,185,129,0.3)]'
-                  : 'bg-[rgba(245,158,11,0.1)] border-[rgba(245,158,11,0.3)]'
+                  : 'bg-[rgba(239,68,68,0.1)] border-[rgba(239,68,68,0.3)]'
               }`}
             >
               <div className="flex items-start justify-between">
@@ -190,24 +186,24 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                       <Sparkles size={18} />
                     </div>
                   ) : (
-                    <div className="w-9 h-9 rounded-full bg-[#f59e0b]/20 text-[#f59e0b] flex items-center justify-center flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-[#ef4444]/20 text-[#ef4444] flex items-center justify-center flex-shrink-0">
                       <AlertCircle size={18} />
                     </div>
                   )}
                   <div>
                     <h4
                       className={`text-sm font-bold ${
-                        isMastered ? 'text-[#10b981]' : 'text-[#f59e0b]'
+                        isMastered ? 'text-[#10b981]' : 'text-[#ef4444]'
                       }`}
                     >
                       {isMastered
                         ? `Topic Mastered! Score: ${scorePct}% (${correctCount}/${questions.length})`
-                        : `Review Recommended. Score: ${scorePct}% (${correctCount}/${questions.length})`}
+                        : `Review Needed. Score: ${scorePct}% (${correctCount}/${questions.length})`}
                     </h4>
                     <p className="text-xs text-[#a1a1aa] mt-0.5">
                       {isMastered
-                        ? 'Your node now shines with vibrant emerald brightness in the Knowledge Tree!'
-                        : 'Score below 70% threshold. Socratic hints below pinpoint areas to reinforce before retrying.'}
+                        ? 'Your node is now mastered in the Tree of Knowledge.'
+                        : 'Score below 70% threshold. Review the explanations below before retrying.'}
                     </p>
                   </div>
                 </div>
@@ -216,14 +212,13 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                   className={`text-lg font-extrabold px-3 py-1 rounded-lg ${
                     isMastered
                       ? 'bg-[#10b981]/20 text-[#10b981]'
-                      : 'bg-[#f59e0b]/20 text-[#f59e0b]'
+                      : 'bg-[#ef4444]/20 text-[#ef4444]'
                   }`}
                 >
                   {scorePct}%
                 </span>
               </div>
 
-              {/* Unlocked Downstream Topics Notification */}
               {isMastered && unlockedNames.length > 0 && (
                 <div className="mt-3.5 pt-3 border-t border-[rgba(16,185,129,0.2)] flex items-start gap-2 text-xs text-[#10b981]">
                   <Unlock size={14} className="mt-0.5 flex-shrink-0" />
@@ -248,7 +243,6 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                   key={q.id || qIdx}
                   className="p-4 rounded-xl bg-[#1a1a1e] border border-[rgba(255,255,255,0.06)] space-y-3"
                 >
-                  {/* Question header */}
                   <div className="flex items-center justify-between">
                     <span
                       className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
@@ -265,28 +259,31 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                     </span>
                   </div>
 
-                  {/* Question text */}
                   <p className="text-[13px] font-semibold text-[#f4f4f5] leading-relaxed">
                     {q.question}
                   </p>
 
-                  {/* Options */}
                   <div className="space-y-2 pt-1">
                     {q.options.map((opt, optIdx) => {
                       const isSelected = selectedOpt === optIdx
                       const isThisCorrect = optIdx === q.correct_index
 
-                      let optStyle = 'border-[rgba(255,255,255,0.08)] bg-[#202024] text-[#d4d4d8] hover:border-[rgba(255,255,255,0.2)] hover:bg-[#25252a]'
+                      let optStyle =
+                        'border-[rgba(255,255,255,0.08)] bg-[#202024] text-[#d4d4d8] hover:border-[rgba(255,255,255,0.2)] hover:bg-[#25252a]'
                       if (submitted) {
                         if (isThisCorrect) {
-                          optStyle = 'border-[#10b981] bg-[rgba(16,185,129,0.12)] text-[#10b981] font-medium'
+                          optStyle =
+                            'border-[#10b981] bg-[rgba(16,185,129,0.12)] text-[#10b981] font-medium'
                         } else if (isSelected && !isThisCorrect) {
-                          optStyle = 'border-[#ef4444] bg-[rgba(239,68,68,0.12)] text-[#ef4444]'
+                          optStyle =
+                            'border-[#ef4444] bg-[rgba(239,68,68,0.12)] text-[#ef4444]'
                         } else {
-                          optStyle = 'border-transparent bg-[#1e1e22] text-[#71717a] opacity-50'
+                          optStyle =
+                            'border-transparent bg-[#1e1e22] text-[#71717a] opacity-50'
                         }
                       } else if (isSelected) {
-                        optStyle = 'border-[#38bdf8] bg-[rgba(56,189,248,0.12)] text-white font-medium ring-1 ring-[#38bdf8]'
+                        optStyle =
+                          'border-[#f6e9c7] bg-[rgba(246,233,199,0.12)] text-white font-medium ring-1 ring-[#f6e9c7]'
                       }
 
                       return (
@@ -299,7 +296,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                             <span
                               className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border ${
                                 isSelected
-                                  ? 'border-transparent bg-[#38bdf8] text-black'
+                                  ? 'border-transparent bg-[#f6e9c7] text-[#1a1813]'
                                   : 'border-[rgba(255,255,255,0.15)] text-[#8e8e93]'
                               }`}
                             >
@@ -319,18 +316,17 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                     })}
                   </div>
 
-                  {/* Feedback Explanation / Socratic Hint after submit */}
                   {submitted && (
-                    <div className="mt-3 p-3 rounded-xl bg-[#232328] border border-[rgba(255,255,255,0.06)] space-y-1.5 text-xs">
-                      <div className="flex items-center gap-1.5 font-semibold text-[#f2f2f7]">
-                        <HelpCircle size={13} className="text-[#38bdf8]" />
+                    <div className="mt-3 p-3 rounded-xl bg-[#222226] border border-[rgba(255,255,255,0.06)] space-y-1.5 text-xs">
+                      <div className="flex items-center gap-1.5 font-semibold text-[#fdfbf7]">
+                        <HelpCircle size={13} className="text-[#f6e9c7]" />
                         <span>Analysis & Key Insight:</span>
                       </div>
                       <p className="text-[#a1a1aa] leading-relaxed">
                         {q.explanation}
                       </p>
                       {!isCorrect && q.socratic_hint && (
-                        <div className="pt-1 text-[#f59e0b] flex items-start gap-1.5">
+                        <div className="pt-1 text-[#f6e9c7] flex items-start gap-1.5">
                           <span className="font-semibold flex-shrink-0">Socratic Hint:</span>
                           <span className="italic">{q.socratic_hint}</span>
                         </div>
@@ -345,17 +341,16 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
 
         {/* ── Modal Footer ── */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-[rgba(255,255,255,0.08)] bg-[#1c1c20]">
-          {/* Chapter study link if available */}
           {topic.chapter_link ? (
             <button
               onClick={() => {
                 onClose()
                 navigate(`/chapter/${topic.chapter_link}`)
               }}
-              className="flex items-center gap-2 text-xs font-semibold text-[#8e8e93] hover:text-[#f2f2f7] transition-colors"
+              className="flex items-center gap-2 text-xs font-semibold text-[#a8a29e] hover:text-[#f6e9c7] transition-colors cursor-pointer"
             >
               <BookOpen size={14} />
-              <span>Review Chapter {topic.chapter_link}</span>
+              <span>Open Linked Chapter</span>
             </button>
           ) : (
             <div />
@@ -367,7 +362,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                 {!isMastered && (
                   <button
                     onClick={handleRetry}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#f2f2f7] bg-[#2a2a30] hover:bg-[#34343c] transition-all"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#fdfbf7] bg-[#2a2a30] hover:bg-[#34343c] transition-all cursor-pointer"
                   >
                     <RotateCcw size={13} />
                     <span>Retry Quiz</span>
@@ -375,7 +370,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                 )}
                 <button
                   onClick={onClose}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#10b981] hover:bg-[#059669] transition-all shadow-lg shadow-[#10b981]/20"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#1a1813] bg-[#f6e9c7] hover:bg-[#ebd6a1] transition-all cursor-pointer"
                 >
                   <span>Continue</span>
                   <ArrowRight size={13} />
@@ -387,7 +382,7 @@ export default function TopicQuizModal({ topic, onClose }: TopicQuizModalProps) 
                 disabled={!allAnswered || submitting}
                 className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold transition-all ${
                   allAnswered && !submitting
-                    ? 'bg-[#38bdf8] text-black hover:bg-[#0ea5e9] shadow-lg shadow-[#38bdf8]/20 cursor-pointer'
+                    ? 'bg-[#f6e9c7] text-[#1a1813] hover:bg-[#ebd6a1] shadow-sm cursor-pointer'
                     : 'bg-[#2a2a30] text-[#71717a] cursor-not-allowed opacity-60'
                 }`}
               >

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Wrench, ChevronDown, ChevronRight, Copy, Check, Pencil, Save, RotateCcw } from 'lucide-react'
+import { ENABLE_EDITING } from '@/lib/editMode'
 
 interface UnderTheHoodProps {
   id: string // unique key for this snippet e.g. "tokenizer", "transformer-block"
@@ -115,14 +116,16 @@ export default function UnderTheHood({
               <div className="flex items-center gap-2">
                 {!isEditing ? (
                   <>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors text-[#8e8e93] hover:text-[#f2f2f7]"
-                      title="Paste or edit code"
-                    >
-                      <Pencil size={12} />
-                      <span>Edit code</span>
-                    </button>
+                    {ENABLE_EDITING && (
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors text-[#8e8e93] hover:text-[#f2f2f7]"
+                        title="Paste or edit code"
+                      >
+                        <Pencil size={12} />
+                        <span>Edit code</span>
+                      </button>
+                    )}
                     <button
                       onClick={handleCopy}
                       className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors text-[#8e8e93] hover:text-[#f2f2f7]"

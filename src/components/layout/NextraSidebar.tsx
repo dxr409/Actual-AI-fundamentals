@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore, useProgressStore, useUIStore } from '@/lib/store'
 import {
   CHAPTERS,
   getChapterPartGroups,
+  getChapterDefaultSections,
   Chapter,
 } from '@/content/chapters'
 import {
@@ -34,19 +35,35 @@ export default function NextraSidebar() {
   const match = location.pathname.match(/\/chapter\/(\d+)/)
   const activeChapterId = match ? parseInt(match[1]) : null
 
-  // Track folder expansion state
+  // AI fundamentals is open by default; other topic groups are collapsed by default
   const [openFolders, setOpenFolders] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
     partGroups.forEach((g) => {
-      initial[g.partNumber] = true
+      initial[g.partNumber] = g.partTitle === 'AI fundamentals'
     })
     return initial
   })
+
+  // Chapter subtopics are closed by default
+  const [openSubtopics, setOpenSubtopics] = useState<Record<number, boolean>>({})
+
+  useEffect(() => {
+    setOpenSubtopics({})
+  }, [location.pathname])
 
   const toggleFolder = (partNumber: string) => {
     setOpenFolders((prev) => ({
       ...prev,
       [partNumber]: !prev[partNumber],
+    }))
+  }
+
+  const toggleChapterSubtopics = (e: React.MouseEvent, chId: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setOpenSubtopics((prev) => ({
+      ...prev,
+      [chId]: !prev[chId],
     }))
   }
 
@@ -81,12 +98,12 @@ export default function NextraSidebar() {
             className={({ isActive }) =>
               `flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 font-semibold'
+                  ? 'bg-[#f6e9c7]/30 text-gray-900 dark:bg-[#f6e9c7]/15 dark:text-[#f6e9c7] font-semibold'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100/70 dark:hover:bg-neutral-800/60'
               }`
             }
           >
-            <Sparkles size={16} className="text-blue-500 flex-shrink-0" />
+            <Sparkles size={16} className="text-[#a1782e] dark:text-[#f6e9c7] flex-shrink-0" />
             <span>Introduction</span>
           </NavLink>
 
@@ -96,19 +113,19 @@ export default function NextraSidebar() {
             className={({ isActive }) =>
               `flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 font-semibold'
+                  ? 'bg-[#f6e9c7]/30 text-gray-900 dark:bg-[#f6e9c7]/15 dark:text-[#f6e9c7] font-semibold'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100/70 dark:hover:bg-neutral-800/60'
               }`
             }
           >
-            <Network size={16} className="text-sky-500 flex-shrink-0" />
+            <Network size={16} className="text-[#a1782e] dark:text-[#f6e9c7] flex-shrink-0" />
             <span>Tree of Knowledge</span>
           </NavLink>
         </div>
 
-        {/* Dynamic Part Groups (Nextra Folders) */}
+        {/* Dynamic Part Groups */}
         {partGroups.map((group) => {
-          const isOpen = openFolders[group.partNumber] ?? true
+          const isOpen = openFolders[group.partNumber] ?? false
 
           return (
             <div key={group.partNumber} className="space-y-1">
@@ -127,33 +144,82 @@ export default function NextraSidebar() {
                 />
               </button>
 
-              {/* Collapsible Folder Children: Chapters stay, subsubtopics removed */}
+              {/* Collapsible Folder Children */}
               {isOpen && (
                 <div className="space-y-0.5 ml-1 border-l border-gray-200 dark:border-neutral-800 pl-2">
                   {group.chapters.map((ch: Chapter) => {
                     const isActive = activeChapterId === ch.id
                     const isDone = !!completed[ch.id]
+                    const rawSections = getChapterDefaultSections(ch.id)
+                    // Do not show subtopics for Adversarial Search (ch 18) or single-section AI fundamentals chapters
+                    const sections =
+                      ch.id === 18 || ch.partTitle === 'AI fundamentals' ? [] : rawSections
+                    const isSubOpen = !!openSubtopics[ch.id]
 
                     return (
-                      <NavLink
-                        key={ch.id}
-                        to={`/chapter/${ch.id}`}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center justify-between px-2.5 py-1.5 rounded-md text-sm transition-colors ${
-                          isActive
-                            ? 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 font-semibold'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100/70 dark:hover:bg-neutral-800/60'
-                        }`}
-                      >
-                        <span className="truncate">{ch.title}</span>
-                        {isDone && (
-                          <Check
-                            size={13}
-                            className="text-emerald-500 dark:text-emerald-400 flex-shrink-0"
-                            strokeWidth={2.5}
-                          />
+                      <div key={ch.id} className="space-y-0.5">
+                        <div className="flex items-center">
+                          <NavLink
+                            to={`/chapter/${ch.id}`}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex-1 min-w-0 flex items-center justify-between px-2.5 py-1.5 rounded-md text-sm transition-colors ${
+                              isActive
+                                ? 'bg-[#f6e9c7]/30 text-gray-900 dark:bg-[#f6e9c7]/15 dark:text-[#f6e9c7] font-semibold'
+                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100/70 dark:hover:bg-neutral-800/60'
+                            }`}
+                          >
+                            <span className="truncate">{ch.title}</span>
+                            {isDone && (
+                              <Check
+                                size={13}
+                                className="text-emerald-500 dark:text-emerald-400 flex-shrink-0 ml-1"
+                                strokeWidth={2.5}
+                              />
+                            )}
+                          </NavLink>
+                          {sections.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={(e) => toggleChapterSubtopics(e, ch.id)}
+                              className="p-1 rounded text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors cursor-pointer"
+                              title={isSubOpen ? 'Hide subtopics' : 'Show subtopics'}
+                            >
+                              <ChevronRight
+                                size={12}
+                                className={`transition-transform duration-150 ${
+                                  isSubOpen ? 'rotate-90' : ''
+                                }`}
+                              />
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Subtopics (closed by default when page is opened) */}
+                        {isSubOpen && sections.length > 0 && (
+                          <div className="pl-3 pr-1 py-1 space-y-0.5 border-l border-gray-200 dark:border-[#f6e9c7]/20 ml-2.5 my-0.5">
+                            {sections.map((sec, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  setMobileMenuOpen(false)
+                                  if (!isActive) {
+                                    navigate(`/chapter/${ch.id}#section-${idx}`)
+                                  } else {
+                                    const el = document.getElementById(`section-${idx}`)
+                                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                                  }
+                                }}
+                                className="w-full text-left truncate px-2 py-1 rounded text-xs text-gray-500 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-[#f6e9c7] hover:bg-gray-100/70 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer"
+                              >
+                                {sec.title}
+                              </button>
+                            ))}
+                          </div>
                         )}
-                      </NavLink>
+                      </div>
                     )
                   })}
                 </div>
@@ -172,10 +238,10 @@ export default function NextraSidebar() {
           </span>
         </div>
 
-        {/* Ambient Progress Track */}
+        {/* Ambient Progress Track with #f6e9c7 fill */}
         <div className="h-1.5 w-full bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-300"
+            className="h-full bg-[#f6e9c7] rounded-full transition-all duration-300 shadow-xs"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -192,15 +258,9 @@ export default function NextraSidebar() {
             <Globe size={13} />
             <span className="uppercase">{i18n.language || 'en'}</span>
           </button>
-
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors cursor-pointer"
-            title="Log out"
-          >
-            <LogOut size={13} />
-            <span>Sign out</span>
-          </button>
+          <span className="text-[11px] text-gray-400 dark:text-neutral-500 font-mono">
+            v2.0
+          </span>
         </div>
       </div>
     </aside>

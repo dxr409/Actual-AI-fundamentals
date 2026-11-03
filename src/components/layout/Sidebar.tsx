@@ -27,6 +27,10 @@ const BG = '#161618'
 const BORDER = 'rgba(255, 255, 255, 0.08)'
 
 const CHAPTER_ICONS: Record<number, string> = {
+  17: '🧭', // Search algorithms, A* and heuristics
+  18: '♟️', // Adversarial search, game trees and decision making
+  19: '🎲', // Probability, Bayesian inference and sequential inference
+  20: '🧬', // Classical machine learning and neural networks
   1: '💬',  // What is a language model?
   2: '🔤',  // Tokenization
   3: '⚗️',  // Embeddings
@@ -43,6 +47,21 @@ const CHAPTER_ICONS: Record<number, string> = {
   14: '📝', // Fine-tuning data
   15: '🎓', // Supervised fine-tuning
   16: '💬', // Chat with your model
+  // Language Model Builder Chapters
+  101: '💬', // What is a Language Model?
+  102: '⚡', // Earlier Models & The Transformer Leap
+  103: '🔤', // Tokenization & BPE
+  104: '⚗️', // Embeddings & Vector Arithmetic
+  105: '🥞', // Anatomy of a Transformer
+  106: '🧱', // Inside One Block: FFN & Residuals
+  107: '📐', // Sizing It Up: Hyperparameters
+  108: '🧹', // Training Data: Web Corpora & Curation
+  109: '🎛️', // How Models Learn: Objective & Weights
+  110: '📉', // Watch It Learn, Loss & Gradient Descent
+  111: '🎭', // How Models Learn Behavior: SFT & DPO
+  112: '⚙️', // Workbench: Setup & Base Models
+  113: '🔬', // Workbench: Pre-Training & Sampling
+  114: '🤖', // Workbench: Fine-Tuning, DPO & Chat
 }
 
 interface SidebarProps {

@@ -15,14 +15,28 @@ import { useProgressStore } from '@/lib/store'
 import TopicQuizModal from './TopicQuizModal'
 
 const CHAPTER_TOPIC_MAP: Record<number, string> = {
-  1: 'llm_core',
-  2: 'rag_systems',
-  3: 'math_foundations',
-  4: 'transformer_arch',
-  5: 'pretraining',
-  6: 'gradient_descent',
-  7: 'rlhf_alignment',
-  8: 'sft_lora',
+  // Part II: Foundations
+  101: 'llm_core',
+  102: 'nlp_rnn',
+  103: 'rag_systems',
+  104: 'math_foundations',
+  // Part III: How models work
+  105: 'attention_mechanism',
+  106: 'mlp',
+  107: 'transformer_arch',
+  108: 'pretraining',
+  109: 'backpropagation',
+  110: 'gradient_descent',
+  111: 'rlhf_alignment',
+  // Part IV: Build your model
+  9: 'transformer_arch',
+  10: 'llm_core',
+  11: 'pretraining',
+  12: 'gradient_descent',
+  13: 'tool_calling',
+  14: 'sft_lora',
+  15: 'sft_lora',
+  16: 'autonomous_agents',
 }
 
 export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number }) {
@@ -44,7 +58,7 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
   const isLocked = topic.status === 'locked'
 
   return (
-    <div className="mt-14 p-5 rounded-2xl bg-[#16161a] border border-[rgba(255,255,255,0.09)] shadow-xl space-y-4">
+    <div className="mt-14 p-5 rounded-2xl bg-[#161618] border border-[rgba(255,255,255,0.09)] shadow-xl space-y-4">
       {/* ── Header ── */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
@@ -54,14 +68,14 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
               background: isMastered
                 ? 'rgba(16, 185, 129, 0.15)'
                 : isReview
-                ? 'rgba(245, 158, 11, 0.15)'
-                : 'rgba(56, 189, 248, 0.15)',
+                ? 'rgba(239, 68, 68, 0.15)'
+                : 'rgba(246, 233, 199, 0.14)',
               borderColor: isMastered
                 ? 'rgba(16, 185, 129, 0.3)'
                 : isReview
-                ? 'rgba(245, 158, 11, 0.3)'
-                : 'rgba(56, 189, 248, 0.3)',
-              color: isMastered ? '#10b981' : isReview ? '#f59e0b' : '#38bdf8',
+                ? 'rgba(239, 68, 68, 0.3)'
+                : 'rgba(246, 233, 199, 0.3)',
+              color: isMastered ? '#10b981' : isReview ? '#ef4444' : '#f6e9c7',
             }}
           >
             <Network size={15} />
@@ -71,14 +85,14 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
               Tree of Knowledge • Validation
             </h4>
             <p className="text-[11px] text-[#8e8e93]">
-              Linked Node: <span className="font-semibold text-white">{topic.title}</span>
+              Linked Node: <span className="font-semibold text-[#f6e9c7]">{topic.title}</span>
             </p>
           </div>
         </div>
 
         <button
           onClick={() => navigate(`/graph?topic=${topic.id}`)}
-          className="flex items-center gap-1 text-[11px] font-semibold text-[#8e8e93] hover:text-[#38bdf8] transition-colors"
+          className="flex items-center gap-1 text-[11px] font-semibold text-[#a8a29e] hover:text-[#f6e9c7] transition-colors cursor-pointer"
         >
           <span>Open in Graph</span>
           <ExternalLink size={11} />
@@ -86,7 +100,7 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
       </div>
 
       {/* ── Status Card ── */}
-      <div className="p-3.5 rounded-xl bg-[#1e1e24] border border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-3.5 rounded-xl bg-[#1c1c1f] border border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             {isMastered && (
@@ -95,12 +109,12 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
               </span>
             )}
             {isReview && (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30 flex items-center gap-1">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#ef4444]/15 text-[#ef4444] border border-[#ef4444]/30 flex items-center gap-1">
                 <AlertCircle size={11} /> Review Needed ({topic.mastery_score}%)
               </span>
             )}
             {isUnlocked && (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/30 flex items-center gap-1">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#f6e9c7]/15 text-[#f6e9c7] border border-[#f6e9c7]/30 flex items-center gap-1">
                 <Unlock size={11} /> Ready to Test
               </span>
             )}
@@ -116,11 +130,11 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
 
           <p className="text-xs text-[#a1a1aa] leading-relaxed">
             {isMastered
-              ? '✨ You have demonstrated mastery of this concept! Downstream nodes have been illuminated.'
+              ? 'You have demonstrated mastery of this concept. Downstream nodes have been illuminated.'
               : isReview
-              ? '⚠️ Your previous quiz score was below 70%. Retest to illuminate this node in emerald glow.'
+              ? 'Your previous quiz score was below 70%. Retest to illuminate this node.'
               : isUnlocked
-              ? 'Complete the 3-question Bloom\'s taxonomy check to illuminate this node and unlock dependent topics.'
+              ? "Complete the 3-question Bloom's taxonomy check to illuminate this node and unlock dependent topics."
               : 'Complete prior prerequisites in the Tree of Knowledge to unlock this verification.'}
           </p>
         </div>
@@ -130,7 +144,7 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
           {isLocked ? (
             <button
               onClick={() => navigate('/graph')}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-[#8e8e93] bg-[#27272e] hover:text-white transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-[#a8a29e] bg-[#27272c] hover:text-white transition-colors cursor-pointer"
             >
               <Lock size={12} />
               <span>View Prerequisites</span>
@@ -138,7 +152,7 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
           ) : (
             <button
               onClick={() => setModalOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-black bg-[#38bdf8] hover:bg-[#0ea5e9] shadow-lg shadow-[#38bdf8]/20 transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#1a1813] bg-[#f6e9c7] hover:bg-[#ebd6a1] shadow-sm transition-all cursor-pointer whitespace-nowrap"
             >
               <Sparkles size={13} />
               <span>{isMastered ? 'Retake Quiz' : 'Take Validation Quiz'}</span>
@@ -154,7 +168,6 @@ export default function ChapterKnowledgeCheck({ chapterId }: { chapterId: number
           topic={topic}
           onClose={() => {
             setModalOpen(false)
-            // If topic is now mastered, also mark chapter completed in progress store
             const updatedTopic = useKnowledgeGraphStore.getState().nodes.find((n) => n.id === topicId)
             if (updatedTopic?.status === 'mastered') {
               markComplete(chapterId)

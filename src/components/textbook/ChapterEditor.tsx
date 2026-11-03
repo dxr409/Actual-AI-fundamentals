@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Pencil, Save, RotateCcw, X, Info, Copy, Check, Plus, Trash2 } from 'lucide-react'
 
-const STORAGE_KEY = (id: number) => `qairu-edit-ch${id}`
+const STORAGE_KEY = (id: number) => `qairu-edit-v3-ch${id}`
 
 export function loadEdits(chapterId: number, defaultSections: { title: string; body: string }[]) {
   try {

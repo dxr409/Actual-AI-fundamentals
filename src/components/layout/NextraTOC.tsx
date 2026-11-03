@@ -57,7 +57,7 @@ export default function NextraTOC({ onEditPage }: NextraTOCProps) {
                 onClick={() => handleScrollToSection(idx)}
                 className={`text-left text-xs transition-colors cursor-pointer block leading-snug truncate w-full ${
                   isActive
-                    ? 'font-semibold text-blue-600 dark:text-blue-400'
+                    ? 'font-semibold text-gray-900 dark:text-[#f6e9c7]'
                     : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
                 }`}
                 title={sec.title}

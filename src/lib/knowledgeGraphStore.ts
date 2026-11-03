@@ -14,7 +14,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.15,
     x: 0,
     y: 0,
-    chapter_link: 1,
+    chapter_link: 101,
     content_page: 'Large Language Models (LLMs) synthesize deep multi-head attention transformers, scalable self-supervised pre-training, and reinforcement alignment into probabilistic reasoning engines.',
     questions: [
       {
@@ -72,7 +72,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.65,
     x: -280,
     y: -160,
-    chapter_link: 3,
+    chapter_link: 104,
     content_page: 'Vectors encode semantic coordinates in multi-dimensional space. The inner product (dot product) quantifies directional alignment and cosine similarity between representations.',
     questions: [
       {
@@ -130,7 +130,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -420,
     y: -270,
-    chapter_link: 6,
+    chapter_link: 110,
     content_page: 'Gradient descent minimizes empirical loss by iteratively shifting parameter weights opposite to the gradient vector: theta = theta - eta * grad(L).',
     questions: [
       {
@@ -188,7 +188,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -530,
     y: -140,
-    chapter_link: 6,
+    chapter_link: 109,
     content_page: 'Backpropagation systematically propagates output loss gradients backward through intermediate activations using the chain rule: dL/dx = (dL/dy) * (dy/dx).',
     questions: [
       {
@@ -246,7 +246,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -370,
     y: 10,
-    chapter_link: 4,
+    chapter_link: 106,
     content_page: 'MLP blocks in modern transformers expand hidden dimensions (typically 4x) with non-linear gating functions like SwiGLU before projecting back to embedding space.',
     questions: [
       {
@@ -304,7 +304,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -170,
     y: -300,
-    chapter_link: 1,
+    chapter_link: 102,
     content_page: 'Recurrent neural networks process sequential tokens step-by-step, carrying an evolving hidden vector h_t = tanh(W_h h_{t-1} + W_x x_t).',
     questions: [
       {
@@ -362,7 +362,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -30,
     y: -360,
-    chapter_link: 4,
+    chapter_link: 105,
     content_page: 'Attention allows every token to query all other tokens in O(1) sequential paths: Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V.',
     questions: [
       {
@@ -420,7 +420,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 140,
     y: -280,
-    chapter_link: 4,
+    chapter_link: 107,
     content_page: 'Modern decoder-only transformers stack identical blocks comprising RMSNorm, Multi-Head Attention with RoPE, residual add, and SwiGLU MLPs.',
     questions: [
       {
@@ -478,7 +478,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 270,
     y: -150,
-    chapter_link: 5,
+    chapter_link: 108,
     content_page: 'Pre-training consumes trillions of tokens to build foundational world models. Chinchilla scaling laws dictate balanced parameter and token scaling.',
     questions: [
       {
@@ -536,7 +536,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 380,
     y: -40,
-    chapter_link: 8,
+    chapter_link: 15,
     content_page: 'LoRA freezes base weights W_0 and trains low-rank decomposition matrices B (d x r) and A (r x k) where rank r << d, slashing VRAM footprint by 80%.',
     questions: [
       {
@@ -594,7 +594,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 420,
     y: 90,
-    chapter_link: 7,
+    chapter_link: 111,
     content_page: 'DPO simplifies alignment by expressing preference probabilities directly through policy model log-ratios, bypassing unstable external reward models.',
     questions: [
       {
@@ -652,7 +652,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 280,
     y: 200,
-    chapter_link: 2,
+    chapter_link: 103,
     content_page: 'RAG injects external factual evidence directly into the LLM context window at runtime, solving hallucination and knowledge cutoff limitations.',
     questions: [
       {
@@ -710,6 +710,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: 120,
     y: 300,
+    chapter_link: 13,
     content_page: 'Tool calling bridges pure text prediction and deterministic action. The model produces structured arguments conforming to strict schemas.',
     questions: [
       {
@@ -767,6 +768,7 @@ export const DEFAULT_NODES: TopicNode[] = [
     brightness: 0.12,
     x: -80,
     y: 280,
+    chapter_link: 16,
     content_page: 'Autonomous agent harness systems coordinate multi-turn task execution, stateful memory reflection, subagent delegation, and goal verification.',
     questions: [
       {
@@ -982,7 +984,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>()(
       },
     }),
     {
-      name: 'qairu-knowledge-graph-v1',
+      name: 'qairu-knowledge-graph-v2',
       partialize: (state) => ({
         nodes: state.nodes,
         edges: state.edges,

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { RotateCcw, Pencil, Eye, Sparkles, BarChart2, Check, ArrowRight } from 'lucide-react'
 import UnderTheHood from '@/components/playgrounds/UnderTheHood'
+import { ENABLE_EDITING } from '@/lib/editMode'
 
 const STORY_PRESET = `The little cat found a red ball. The little cat pushed the ball.
 The little dog found the red ball. The little dog chased the ball.
@@ -220,13 +221,15 @@ export default function TrigramLanguageModel() {
             </button>
           </div>
 
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg text-[#8e8e93] hover:text-white hover:bg-[#222226] border border-[rgba(255,255,255,0.08)] transition-colors cursor-pointer"
-          >
-            {isEditing ? <Eye size={12} /> : <Pencil size={12} />}
-            <span>{isEditing ? 'Highlight View' : 'Edit Text'}</span>
-          </button>
+          {ENABLE_EDITING && (
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg text-[#8e8e93] hover:text-white hover:bg-[#222226] border border-[rgba(255,255,255,0.08)] transition-colors cursor-pointer"
+            >
+              {isEditing ? <Eye size={12} /> : <Pencil size={12} />}
+              <span>{isEditing ? 'Highlight View' : 'Edit Text'}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -384,19 +387,19 @@ def train_trigram_model(corpus: str):
     """
     transitions = defaultdict(Counter)
     text = corpus.lower()
-    
+
     # 1. Count occurrences of 3-letter contexts followed by next char
     for i in range(len(text) - 3):
         prefix = text[i:i+3]       # e.g. "ali", "bek", "the"
         next_char = text[i+3]      # next character
         transitions[prefix][next_char] += 1
-        
+
     # 2. Normalize raw counts into probabilities (like the heatmap matrix)
     probabilities = {}
     for prefix, next_counts in transitions.items():
         total = sum(next_counts.values())
         probabilities[prefix] = {char: count / total for char, count in next_counts.items()}
-        
+
     return probabilities`}
         >
           <div className="p-3 rounded-xl bg-[#0d0d0f] border border-[rgba(255,255,255,0.06)] mb-3 text-xs font-mono leading-relaxed text-[#a1a1a6]">

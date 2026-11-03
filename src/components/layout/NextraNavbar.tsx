@@ -83,9 +83,9 @@ export default function NextraNavbar() {
 
   return (
     <header className="sticky top-0 z-30 w-full backdrop-blur-md bg-white/80 dark:bg-[#111111]/85 border-b border-gray-200/80 dark:border-neutral-800 transition-colors">
-      <div className="w-full h-16 px-4 sm:px-6 flex items-center justify-between gap-3">
-        {/* Left: Sidebar Toggle, Mobile Toggle & Brand Logo */}
-        <div className="flex items-center gap-2.5">
+      <div className="w-full h-16 px-4 sm:px-6 flex items-center justify-between gap-4">
+        {/* Left Side: Toggles + Logo + Documentation, About, Contact + Search */}
+        <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
           {/* Mobile hamburger menu */}
           <button
             onClick={toggleMobileMenu}
@@ -105,64 +105,51 @@ export default function NextraNavbar() {
             <PanelLeft size={18} />
           </button>
 
-          {/* Brand Logo without 'Docs' badge */}
+          {/* Brand Logo with #f6e9c7 accent badge */}
           <Link
             to="/"
-            className="flex items-center gap-2.5 font-bold text-base sm:text-lg tracking-tight text-gray-900 dark:text-white hover:opacity-90 transition-opacity ml-1"
+            className="flex items-center gap-2.5 font-bold text-base sm:text-lg tracking-tight text-gray-900 dark:text-white hover:opacity-90 transition-opacity shrink-0"
           >
-            <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-sm shadow-sm shadow-blue-500/20">
+            <div className="w-7 h-7 rounded-lg bg-[#f6e9c7] flex items-center justify-center text-[#1a1813] font-black text-sm shadow-xs">
               Q
             </div>
             <span>QAIRU</span>
           </Link>
-        </div>
 
-        {/* Center: Top Nav Links without Knowledge Tree */}
-        <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
-          <Link
-            to="/"
-            className={`px-3 py-1.5 rounded-md transition-colors ${
-              isDocsActive
-                ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60'
-            }`}
-          >
-            Documentation
-          </Link>
-          <Link
-            to="/progress"
-            className={`px-3 py-1.5 rounded-md transition-colors ${
-              location.pathname === '/progress'
-                ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60'
-            }`}
-          >
-            Progress
-          </Link>
-          <Link
-            to="/acknowledgements"
-            className={`px-3 py-1.5 rounded-md transition-colors ${
-              location.pathname === '/acknowledgements'
-                ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60'
-            }`}
-          >
-            About
-          </Link>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="px-3 py-1.5 rounded-md text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60 transition-colors flex items-center gap-1"
-          >
-            Contact ↗
-          </a>
-        </nav>
+          {/* Navigation Links moved to the Left */}
+          <nav className="hidden md:flex items-center gap-1 text-sm font-medium shrink-0">
+            <Link
+              to="/"
+              className={`px-3 py-1.5 rounded-md transition-colors ${
+                isDocsActive
+                  ? 'text-gray-900 dark:text-[#f6e9c7] font-semibold bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60'
+              }`}
+            >
+              Documentation
+            </Link>
+            <Link
+              to="/acknowledgements"
+              className={`px-3 py-1.5 rounded-md transition-colors ${
+                location.pathname === '/acknowledgements'
+                  ? 'text-gray-900 dark:text-[#f6e9c7] font-semibold bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60'
+              }`}
+            >
+              About
+            </Link>
+            <a
+              href="https://github.com/dxr409/Actual-AI-fundamentals"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3 py-1.5 rounded-md text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-neutral-800/60 transition-colors flex items-center gap-1"
+            >
+              Contact ↗
+            </a>
+          </nav>
 
-        {/* Right: Search + Pomodoro + Theme + AI Helper */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Nextra Search Input with 'Search...' placeholder */}
-          <div ref={searchRef} className="relative w-36 sm:w-60">
+          {/* Search on the Left with #f6e9c7 focus accent */}
+          <div ref={searchRef} className="relative w-44 sm:w-64 ml-1">
             <div className="relative flex items-center">
               <Search
                 size={15}
@@ -174,7 +161,7 @@ export default function NextraNavbar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
                 placeholder="Search..."
-                className="w-full pl-9 pr-12 py-1.5 text-sm bg-gray-100/80 dark:bg-white/[0.07] border border-transparent dark:border-neutral-800 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-[#1a1a1a] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 transition-all"
+                className="w-full h-9 pl-9 pr-12 text-sm bg-gray-100/80 dark:bg-white/[0.07] border border-gray-200/80 dark:border-neutral-800 rounded-lg focus:outline-none focus:border-[#f6e9c7] dark:focus:border-[#f6e9c7] focus:bg-white dark:focus:bg-[#1a1a1a] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 transition-all"
               />
               <kbd className="hidden sm:inline-flex absolute right-2.5 px-1.5 py-0.5 text-[10px] font-mono text-gray-400 dark:text-gray-500 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded shadow-xs pointer-events-none">
                 ⌘K
@@ -190,7 +177,7 @@ export default function NextraNavbar() {
                       <button
                         key={ch.id}
                         onClick={() => handleSelectResult(ch.id)}
-                        className="w-full text-left px-3.5 py-2.5 hover:bg-blue-50 dark:hover:bg-blue-500/10 flex items-start gap-2.5 transition-colors cursor-pointer"
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-[#f6e9c7]/20 dark:hover:bg-[#f6e9c7]/10 flex items-start gap-2.5 transition-colors cursor-pointer"
                       >
                         <div className="mt-0.5 w-5 h-5 rounded bg-gray-100 dark:bg-neutral-800 flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 flex-shrink-0">
                           {ch.id}
@@ -214,9 +201,12 @@ export default function NextraNavbar() {
               </div>
             )}
           </div>
+        </div>
 
+        {/* Right Side: Pomodoro Timer + Theme + AI Helper */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Pomodoro Timer */}
-          <div className="hidden md:block">
+          <div className="hidden sm:block">
             <PomodoroTimer />
           </div>
 
@@ -224,15 +214,15 @@ export default function NextraNavbar() {
           <div className="relative">
             <button
               onClick={() => setThemeDropdownOpen((v) => !v)}
-              className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-1 cursor-pointer"
+              className="h-9 w-9 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 border border-transparent dark:border-neutral-800 transition-colors cursor-pointer"
               title="Change theme"
             >
               {theme === 'light' ? (
-                <Sun size={18} />
+                <Sun size={17} />
               ) : theme === 'dark' ? (
-                <Moon size={18} />
+                <Moon size={17} />
               ) : (
-                <Laptop size={18} />
+                <Laptop size={17} />
               )}
             </button>
 
@@ -247,7 +237,7 @@ export default function NextraNavbar() {
                     }}
                     className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs capitalize transition-colors cursor-pointer ${
                       theme === mode
-                        ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-500/10'
+                        ? 'text-gray-900 dark:text-[#f6e9c7] font-semibold bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15'
                         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800'
                     }`}
                   >
@@ -261,17 +251,18 @@ export default function NextraNavbar() {
             )}
           </div>
 
-          {/* AI Helper Toggle Button */}
+          {/* AI Helper Toggle Button with #f6e9c7 active accent */}
           <button
             onClick={toggleHelper}
-            className={`p-2 rounded-lg text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`h-9 px-3 rounded-lg text-xs flex items-center gap-1.5 transition-all cursor-pointer border ${
               helperOpen
-                ? 'text-blue-600 bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30'
-                : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-neutral-800'
+                ? 'text-[#1a1813] bg-[#f6e9c7] dark:text-[#f6e9c7] dark:bg-[#f6e9c7]/20 border-[#f6e9c7]/40 font-medium'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-neutral-800 border-transparent dark:border-neutral-800'
             }`}
             title="Toggle AI Tutor"
           >
-            <Bot size={18} />
+            <Bot size={17} />
+            <span className="hidden lg:inline text-xs">AI Tutor</span>
           </button>
         </div>
       </div>

@@ -34,12 +34,22 @@ export default {
           600: '#2e2e34',   // hover states
           500: '#3e3e46',   // subtle dividers
         },
-        // Apple Orchid / Purple accent (matches CHAPTER tag & buttons)
-        accent: '#bf5af2',
-        purple: {
-          400: '#d946ef',
-          500: '#bf5af2',
-          600: '#a855f7',
+        // Accent: Warm cream / ivory tone #f6e9c7
+        accent: {
+          DEFAULT: '#f6e9c7',
+          hover: '#ebd6a1',
+          active: '#dfbe79',
+          dark: '#1a1813',
+        },
+        cream: {
+          50: '#fdfbf7',
+          100: '#faf6ee',
+          200: '#f6e9c7',
+          300: '#ebd6a1',
+          400: '#dfbe79',
+          500: '#cfa656',
+          600: '#b88a3e',
+          700: '#946a30',
         },
         surface: '#131315',
         'surface-card': '#18181a',

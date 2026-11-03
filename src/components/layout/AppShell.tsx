@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import NextraNavbar from './NextraNavbar'
 import NextraSidebar from './NextraSidebar'
-import NextraTOC from './NextraTOC'
 import HelperWidget from '@/components/helper/HelperWidget'
 import { useUIStore } from '@/lib/store'
 import { X } from 'lucide-react'
@@ -14,7 +13,14 @@ export default function AppShell() {
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen)
   const setMobileMenuOpen = useUIStore((s) => s.setMobileMenuOpen)
 
-  const isChapter = location.pathname.startsWith('/chapter/')
+  const isGraph = location.pathname.startsWith('/graph')
+
+  // Always scroll to top when navigating to a new page/chapter
+  useEffect(() => {
+    if (!location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+    }
+  }, [location.pathname])
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100 transition-colors">
@@ -59,25 +65,24 @@ export default function AppShell() {
         )}
 
         {/* Center Article Content */}
-        <main className="flex-1 min-w-0 px-6 sm:px-10 lg:px-16 py-8 flex flex-col justify-between">
-          <div className="w-full max-w-4xl mx-auto">
+        {isGraph ? (
+          <main className="flex-1 min-w-0 h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
             <Outlet />
-          </div>
-
-          {/* Nextra Standard Footer */}
-          <footer className="mt-20 pt-8 border-t border-gray-200/80 dark:border-neutral-800 text-center text-xs text-gray-500 dark:text-gray-400">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span>QAIRU AI Platform</span>
-              <span>MIT License • Interactive AI Education</span>
+          </main>
+        ) : (
+          <main className="flex-1 min-w-0 px-6 sm:px-10 lg:px-16 py-8 flex flex-col justify-between">
+            <div className="w-full max-w-4xl mx-auto">
+              <Outlet />
             </div>
-          </footer>
-        </main>
 
-        {/* Right Desktop Table of Contents (for Chapter Pages, No Changes) */}
-        {isChapter && (
-          <div className="hidden xl:block shrink-0">
-            <NextraTOC />
-          </div>
+            {/* Nextra Standard Footer */}
+            <footer className="mt-20 pt-8 border-t border-gray-200/80 dark:border-neutral-800 text-center text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span>QAIRU AI Platform</span>
+                <span>MIT License • Interactive AI Education</span>
+              </div>
+            </footer>
+          </main>
         )}
 
         {/* Right AI Helper Slide-over Panel */}
