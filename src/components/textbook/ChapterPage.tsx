@@ -278,12 +278,12 @@ export default function ChapterPage() {
     <div className="w-full max-w-4xl mx-auto py-4 select-text">
       {/* Chapter Title & Action Bar */}
       <div className="mb-8">
-        {ENABLE_EDITING && (
-          <div className="flex items-start justify-between gap-4 mb-2">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-              {chapter.title}
-            </h1>
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            {chapter.title}
+          </h1>
 
+          {ENABLE_EDITING && (
             <div className="flex items-center gap-2 flex-shrink-0 pt-1">
               {edited && (
                 <span className="text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15 text-[#1a1813] dark:text-[#f6e9c7] border border-[#f6e9c7]/40">
@@ -298,8 +298,8 @@ export default function ChapterPage() {
                 <span>Edit page</span>
               </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Subtitle / Lead Paragraph */}
         {chapter.subtitle && (

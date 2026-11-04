@@ -26,31 +26,31 @@ export default function WelcomePage() {
   return (
     <div className="w-full max-w-4xl mx-auto py-4 select-text animate-fade-in">
       {/* Nextra Breadcrumb */}
-      {ENABLE_EDITING && (
-        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-medium mb-3">
-          <span>Documentation</span>
-          <span>/</span>
-          <span className="text-gray-800 dark:text-gray-200 font-semibold">Introduction</span>
-        </div>
-      )}
+      <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-medium mb-3">
+        <span>Documentation</span>
+        <span>/</span>
+        <span className="text-gray-800 dark:text-gray-200 font-semibold">Introduction</span>
+      </div>
 
       {/* Top action bar with edit button */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          {edited && (
-            <span className="text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15 text-[#1a1813] dark:text-[#f6e9c7] border border-[#f6e9c7]/40">
-              Edited locally
-            </span>
-          )}
+      {ENABLE_EDITING && (
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            {edited && (
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-[#f6e9c7]/30 dark:bg-[#f6e9c7]/15 text-[#1a1813] dark:text-[#f6e9c7] border border-[#f6e9c7]/40">
+                Edited locally
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => setEditorOpen(true)}
+            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 hover:bg-gray-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-gray-200/80 dark:border-neutral-700"
+          >
+            <Pencil size={12} />
+            <span>Edit page</span>
+          </button>
         </div>
-        <button
-          onClick={() => setEditorOpen(true)}
-          className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 hover:bg-gray-200/80 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-gray-200/80 dark:border-neutral-700"
-        >
-          <Pencil size={12} />
-          <span>Edit page</span>
-        </button>
-      </div>
+      )}
 
       {/* Greeting & Header */}
       <div className="mb-8">
