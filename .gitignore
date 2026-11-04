@@ -47,3 +47,5 @@ env/
 *.sln
 *.sw?
 *.code-workspace
+.vercel
+.env*

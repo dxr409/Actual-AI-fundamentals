@@ -119,11 +119,11 @@ function CoinStackSvg({ count, maxDisc = 7 }: { count: number; maxDisc?: number 
                 cy={cy}
                 rx="11"
                 ry="3.6"
-                fill="#f59e0b"
-                stroke="#fef08a"
+                fill="#d9a93a"
+                stroke="#f6e9c7"
                 strokeWidth="1"
               />
-              <ellipse cx="20" cy={cy - 0.8} rx="8" ry="2.2" fill="#fbbf24" />
+              <ellipse cx="20" cy={cy - 0.8} rx="8" ry="2.2" fill="#efc75e" />
             </g>
           )
         })}
@@ -273,25 +273,10 @@ export default function ProbabilityBayesianPlayground() {
     setLastHopRoll(null)
   }
 
-  // Lively valley sky & meadow background that becomes slightly lighter when discount factor (gamma) is lower
+  // Calm dusk palette: one deep blue-teal family. Higher gamma warms the horizon glow a little.
   const arenaBackground = useMemo(() => {
-    const t = 1 - gamma // 0 when gamma=1, 1 when gamma=0 (lighter when gamma is lower)
-    // Sky top (deep valley teal-slate -> lighter misty morning sky as gamma lowers)
-    const r1 = Math.round(22 + t * 52)
-    const g1 = Math.round(44 + t * 58)
-    const b1 = Math.round(56 + t * 62)
-
-    // Valley meadow horizon (lush sage-emerald -> lighter sunlit meadow)
-    const r2 = Math.round(26 + t * 48)
-    const g2 = Math.round(62 + t * 56)
-    const b2 = Math.round(48 + t * 44)
-
-    // Riverbed water base (deep river blue-teal -> lighter aqua river)
-    const r3 = Math.round(14 + t * 36)
-    const g3 = Math.round(52 + t * 54)
-    const b3 = Math.round(74 + t * 58)
-
-    return `linear-gradient(180deg, rgb(${r1}, ${g1}, ${b1}) 0%, rgb(${r2}, ${g2}, ${b2}) 52%, rgb(${r3}, ${g3}, ${b3}) 100%)`
+    const glow = (0.1 + gamma * 0.16).toFixed(2)
+    return `radial-gradient(ellipse 70% 55% at 82% 14%, rgba(246, 233, 199, ${glow}) 0%, rgba(246, 233, 199, 0) 70%), linear-gradient(180deg, #172433 0%, #1b3040 55%, #17303a 100%)`
   }, [gamma])
 
   return (
@@ -633,7 +618,7 @@ export default function ProbabilityBayesianPlayground() {
       >
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2">
-            <Coins size={18} className="text-[#f59e0b]" />
+            <Coins size={18} className="text-[#f6e9c7]" />
             <h3 className="text-lg font-bold text-white">
               Rabbit Stepping Stones & Discount Factor (γ) Motivation
             </h3>
@@ -655,86 +640,53 @@ export default function ProbabilityBayesianPlayground() {
                 animation: rabbitStatus === 'fell' ? 'lossShake 0.5s ease-in-out' : undefined,
               }}
             >
-              {/* ── LIVELY VALLEY SCENERY & FLOWING WATER UNDER THE STONES (BUILT FROM SCRATCH) ── */}
+              {/* ── SCENERY: soft layered hills + calm river (no stretched shapes) ── */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {/* Distant Valley Mountains, Rolling Green Hills & Pine Trees */}
                 <svg
-                  viewBox="0 0 600 260"
-                  preserveAspectRatio="none"
-                  className="w-full h-full"
+                  viewBox="0 0 600 300"
+                  preserveAspectRatio="xMidYMax slice"
+                  className="absolute inset-0 w-full h-full"
                 >
-                  {/* Warm Valley Sun Glow */}
-                  <circle
-                    cx="510"
-                    cy="44"
-                    r={22 + gamma * 10}
-                    fill="rgba(246, 233, 199, 0.22)"
-                  />
-                  <circle cx="510" cy="44" r="13" fill="rgba(253, 251, 247, 0.45)" />
-
-                  {/* Soft Valley Clouds */}
-                  <g fill="rgba(253, 251, 247, 0.14)">
-                    <ellipse cx="115" cy="38" rx="34" ry="10" />
-                    <ellipse cx="135" cy="34" rx="24" ry="9" />
-                    <ellipse cx="320" cy="30" rx="40" ry="9" />
-                  </g>
-
-                  {/* Far Mountain Ridge */}
+                  {/* Moon / sun disc */}
+                  <circle cx="500" cy="52" r="15" fill="#f6e9c7" fillOpacity="0.55" />
+                  {/* Far ridge */}
                   <path
-                    d="M0,135 L75,78 L155,122 L250,64 L355,118 L445,72 L535,112 L600,82 L600,165 L0,165 Z"
-                    fill="rgba(20, 48, 42, 0.45)"
+                    d="M0,170 L70,128 L150,160 L240,112 L340,158 L430,120 L520,154 L600,126 L600,230 L0,230 Z"
+                    fill="#22394a"
                   />
-
-                  {/* Rolling Lively Green Valley Hills */}
+                  {/* Near hills */}
                   <path
-                    d="M0,142 Q95,102 205,134 T420,126 T600,136 L600,180 L0,180 Z"
-                    fill="rgba(22, 101, 52, 0.55)"
+                    d="M0,182 Q120,148 250,176 T480,170 T600,176 L600,230 L0,230 Z"
+                    fill="#1f4147"
                   />
-                  <path
-                    d="M0,156 Q140,128 280,152 T600,148 L600,190 L0,190 Z"
-                    fill="rgba(21, 128, 61, 0.52)"
-                  />
-
-                  {/* Valley Pine Trees Along the Riverbanks */}
-                  {[28, 52, 165, 435, 548, 574].map((tx, i) => (
-                    <g key={i} transform={`translate(${tx}, ${i % 2 === 0 ? 118 : 124})`}>
-                      <polygon points="10,0 0,22 20,22" fill="rgba(20, 83, 45, 0.85)" />
-                      <polygon points="10,8 -2,30 22,30" fill="rgba(22, 101, 52, 0.9)" />
-                      <rect x="8" y="30" width="4" height="6" fill="rgba(68, 64, 60, 0.8)" />
+                  {/* Tiny pines, evenly toned */}
+                  {[36, 68, 520, 556].map((tx) => (
+                    <g key={tx} transform={`translate(${tx}, 152)`} fill="#183a40">
+                      <polygon points="9,0 0,20 18,20" />
+                      <polygon points="9,8 -2,28 20,28" />
                     </g>
                   ))}
                 </svg>
 
-                {/* Animated Flowing River Water Stream Directly Under the Stepping Stones */}
+                {/* River: three tonal bands of one hue, gentle drift */}
                 <div
-                  className="absolute inset-x-0 bottom-0 h-32"
-                  style={{ animation: 'waveSlide 3.6s ease-in-out infinite' }}
+                  className="absolute inset-x-0 bottom-0 h-28"
+                  style={{ animation: 'waveSlide 5s ease-in-out infinite' }}
                 >
                   <svg
                     viewBox="0 0 600 120"
                     preserveAspectRatio="none"
                     className="w-[108%] h-full -ml-[4%]"
                   >
-                    {/* Upper River Current */}
-                    <path
-                      d="M0,26 Q75,12 150,26 T300,26 T450,26 T600,26 L600,120 L0,120 Z"
-                      fill="rgba(14, 116, 144, 0.62)"
-                    />
-                    {/* Mid Shimmering Water Wave */}
-                    <path
-                      d="M0,46 Q75,62 150,46 T300,46 T450,46 T600,46 L600,120 L0,120 Z"
-                      fill="rgba(2, 132, 199, 0.52)"
-                    />
-                    {/* Deep Riverbed Current */}
-                    <path
-                      d="M0,70 Q75,56 150,70 T300,70 T450,70 T600,70 L600,120 L0,120 Z"
-                      fill="rgba(12, 74, 110, 0.72)"
-                    />
-                    {/* Sparkling Whitewater Ripples Under the Stones */}
-                    <line x1="55" y1="42" x2="95" y2="42" stroke="rgba(224, 242, 254, 0.35)" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="185" y1="58" x2="235" y2="58" stroke="rgba(224, 242, 254, 0.35)" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="310" y1="45" x2="355" y2="45" stroke="rgba(224, 242, 254, 0.35)" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="440" y1="62" x2="490" y2="62" stroke="rgba(224, 242, 254, 0.35)" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M0,24 Q75,12 150,24 T300,24 T450,24 T600,24 L600,120 L0,120 Z" fill="#2c6678" fillOpacity="0.85" />
+                    <path d="M0,50 Q75,62 150,50 T300,50 T450,50 T600,50 L600,120 L0,120 Z" fill="#245466" fillOpacity="0.9" />
+                    <path d="M0,76 Q75,66 150,76 T300,76 T450,76 T600,76 L600,120 L0,120 Z" fill="#1b4150" />
+                    <g stroke="#cfe8ef" strokeOpacity="0.28" strokeWidth="1.5" strokeLinecap="round">
+                      <line x1="60" y1="40" x2="96" y2="40" />
+                      <line x1="190" y1="60" x2="232" y2="60" />
+                      <line x1="320" y1="42" x2="356" y2="42" />
+                      <line x1="450" y1="62" x2="490" y2="62" />
+                    </g>
                   </svg>
                 </div>
               </div>
@@ -748,7 +700,7 @@ export default function ProbabilityBayesianPlayground() {
                     ? 'γ ≈ 0.5 (Moderate Motivation): Far coin stacks are shrinking'
                     : 'γ ≈ 1.0 (High Motivation): Far stones overflow with golden coins!'}
                 </span>
-                <span className="font-mono px-3 py-1 rounded-full bg-black/55 text-[#fbbf24] border border-[#fbbf24]/30">
+                <span className="font-mono px-3 py-1 rounded-full bg-black/40 text-[#f6e9c7] border border-[#f6e9c7]/30">
                   Bag: {collectedCoins} coins
                 </span>
               </div>
@@ -789,52 +741,72 @@ export default function ProbabilityBayesianPlayground() {
                       <div
                         className={`mb-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
                           coinsOnStone > 0
-                            ? 'bg-[#f59e0b]/20 text-[#fde68a] border-[#f59e0b]/40'
-                            : 'bg-black/30 text-[#71717a] border-white/10'
+                            ? 'bg-[#f6e9c7]/15 text-[#f6e9c7] border-[#f6e9c7]/35'
+                            : 'bg-black/25 text-white/40 border-white/10'
                         }`}
                       >
                         +{coinsOnStone} {coinsOnStone === 1 ? 'coin' : 'coins'}
                       </div>
 
-                      {/* Physical Stepping Stone */}
-                      <div
-                        className="w-full py-2.5 px-1.5 rounded-2xl border-2 text-center transition-all shadow-md"
-                        style={{
-                          background:
-                            isRabbitHere && rabbitStatus === 'fell'
-                              ? 'rgba(239, 68, 68, 0.5)'
-                              : isRabbitHere
-                              ? '#f6e9c7'
-                              : isPassed
-                              ? 'rgba(16, 185, 129, 0.28)'
-                              : 'rgba(24, 24, 28, 0.88)',
-                          borderColor:
-                            isRabbitHere && rabbitStatus === 'fell'
-                              ? '#ef4444'
-                              : isRabbitHere
-                              ? '#ffffff'
-                              : isPassed
-                              ? '#10b981'
-                              : 'rgba(255,255,255,0.18)',
-                        }}
-                      >
-                        <div
-                          className={`text-[10px] font-bold ${
-                            isRabbitHere && rabbitStatus !== 'fell' ? 'text-[#1a1813]' : 'text-white'
-                          }`}
-                        >
-                          {st === 0 ? 'Shore' : st === 4 ? 'Stone 4' : `Stone ${st}`}
-                        </div>
-                        <div
-                          className={`text-[9px] font-mono ${
-                            isRabbitHere && rabbitStatus !== 'fell'
-                              ? 'text-[#3a3528]'
-                              : 'text-[#a1a1aa]'
-                          }`}
-                        >
-                          {st === 0 ? 'Base 10' : `${baseCoins}×γ^${st}`}
-                        </div>
-                      </div>
+                      {/* Physical Stepping Stone: a real stone shape + ripple, label underneath */}
+                      {(() => {
+                        const fell = isRabbitHere && rabbitStatus === 'fell'
+                        const active = isRabbitHere && !fell
+                        const top = fell
+                          ? '#b4605f'
+                          : active
+                          ? '#f6e9c7'
+                          : isPassed
+                          ? '#8fb3a0'
+                          : '#9aa3ab'
+                        const base = fell
+                          ? '#7d3e3e'
+                          : active
+                          ? '#cdbd93'
+                          : isPassed
+                          ? '#5d8470'
+                          : '#5f6870'
+                        const isShore = st === 0
+                        return (
+                          <div className="relative w-full flex flex-col items-center">
+                            <div className="relative w-full flex justify-center" style={{ height: isShore ? 30 : 34 }}>
+                              {/* water ripple ring */}
+                              <div
+                                className="absolute rounded-[50%] border"
+                                style={{
+                                  width: '92%',
+                                  height: 14,
+                                  bottom: -5,
+                                  borderColor: 'rgba(207, 232, 239, 0.28)',
+                                }}
+                              />
+                              {/* stone body */}
+                              <div
+                                className="absolute bottom-0 transition-all duration-300"
+                                style={{
+                                  width: isShore ? '100%' : '82%',
+                                  height: isShore ? 24 : 28,
+                                  borderRadius: isShore ? '14px 14px 10px 10px / 12px 12px 10px 10px' : '50% 50% 46% 46% / 62% 62% 38% 38%',
+                                  background: `linear-gradient(180deg, ${top} 0%, ${base} 100%)`,
+                                  boxShadow: active
+                                    ? '0 0 0 2px rgba(246,233,199,0.35), 0 6px 14px rgba(0,0,0,0.45)'
+                                    : '0 5px 10px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.25)',
+                                }}
+                              />
+                            </div>
+                            <div
+                              className={`mt-2 text-[10px] font-bold leading-tight ${
+                                active ? 'text-[#f6e9c7]' : 'text-white/85'
+                              }`}
+                            >
+                              {st === 0 ? 'Shore' : `Stone ${st}`}
+                            </div>
+                            <div className="text-[9px] font-mono text-white/55 leading-tight">
+                              {st === 0 ? 'Base 10' : `${baseCoins}×γ^${st}`}
+                            </div>
+                          </div>
+                        )
+                      })()}
                     </div>
                   )
                 })}
